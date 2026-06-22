@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Fartura | ODS 2 e Inovação</title>
+    
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="antialiased">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header -->
+        <header class="mb-10 text-center md:text-left border-b pb-6 border-gray-200">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-green-700 tracking-tight mb-2">Projeto Fartura</h1>
+            <p class="text-xl text-gray-600 font-semibold">Tecnologia contra a fome: ODS 2 e a Agricultura Sustentável</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- LEFT COLUMN: Report Context & Data -->
+            <section class="lg:col-span-7 flex flex-col gap-6">
+                
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Central do Relatório</h2>
+                    <p class="text-gray-600 mb-6 text-sm leading-relaxed">
+                        Esta seção reúne as principais descobertas conceituais sobre o Projeto Fartura e o cenário de insegurança alimentar. Navegue pelas abas para explorar as estatísticas, conhecer as necessidades reais dos produtores e enviar suas sugestões através do nosso canal validado.
+                    </p>
+
+                    <!-- Interactive Tabs -->
+                    <div class="flex flex-wrap gap-1 mb-6 border-b border-gray-200 pb-1" id="tab-container">
+                        <button onclick="changeTab('contexto')" id="tab-contexto" class="px-4 py-2 font-bold rounded-t-lg bg-green-50 text-green-700 border-b-2 border-green-600 transition-colors text-sm">O Problema</button>
+                        <button onclick="changeTab('dados')" id="tab-dados" class="px-4 py-2 font-bold rounded-t-lg text-gray-500 hover:bg-gray-50 transition-colors text-sm">Dados do Campo</button>
+                        <button onclick="changeTab('personas')" id="tab-personas" class="px-4 py-2 font-bold rounded-t-lg text-gray-500 hover:bg-gray-50 transition-colors text-sm">Personas</button>
+                        <button onclick="changeTab('contato')" id="tab-contato" class="px-4 py-2 font-bold rounded-t-lg text-gray-500 hover:bg-gray-50 transition-colors text-sm">Fale Conosco</button>
+                    </div>
+
+                    <!-- Tab Content: Contexto -->
+                    <div id="content-contexto" class="fade-in">
+                        <div class="bg-red-50 p-4 rounded-xl border-l-4 border-red-500 mb-4">
+                            <h3 class="text-lg font-bold text-red-700 flex items-center gap-2">🌍 Cenário Crítico</h3>
+                            <p class="text-red-900 mt-2 text-sm">Em 2022, <strong>733 milhões</strong> de pessoas enfrentavam a fome no mundo (FAO). No Brasil, <strong>21 milhões</strong> sofrem com insegurança alimentar grave (PENSSAN).</p>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-800 mt-6 mb-2">Metas Foco (2.3 e 2.4)</h3>
+                        <ul class="space-y-3 text-gray-600 text-sm">
+                            <li class="flex items-start"><span class="mr-2">📈</span> <strong>Produtividade:</strong> Dobrar a renda de pequenos produtores, garantindo acesso a crédito, tecnologia e mercados.</li>
+                            <li class="flex items-start"><span class="mr-2">🌱</span> <strong>Sustentabilidade:</strong> Práticas agrícolas resilientes às mudanças climáticas (secas, pragas).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tab Content: Dados -->
+                    <div id="content-dados" class="hidden fade-in">
+                        <h3 class="text-lg font-bold text-gray-800 text-center mb-2">A Força da Agricultura Familiar no Brasil</h3>
+                        <p class="text-xs text-center text-gray-500 mb-4">Dados: Censo Agropecuário IBGE (2017)</p>
+                        
+                        <div class="chart-container">
+                            <canvas id="ibgeChart"></canvas>
+                        </div>
+                        
+                        <div class="mt-4 p-4 bg-green-50 rounded-xl text-green-800 text-sm font-medium text-center">
+                            Apesar de representarem 77% dos estabelecimentos e produzirem 70% da nossa comida, esses agricultores possuem o <strong>menor acesso à tecnologia, crédito e assistência</strong>.
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Personas -->
+                    <div id="content-personas" class="hidden fade-in space-y-4">
+                        <div class="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="text-4xl">🧑‍🌾</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">João da Silva, 52 anos</h4>
+                                    <p class="text-xs text-gray-500">Agricultor Familiar | Ensino Fundamental Incompleto</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700"><strong>Dores:</strong> Perde safras por falta de previsão climática, não sabe identificar pragas, vende barato para atravessadores. Usa smartphone básico e tem internet limitada.</p>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="text-4xl">👩‍🔬</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-800">Ana Paula, 34 anos</h4>
+                                    <p class="text-xs text-gray-500">Extensionista Rural EMATER | Engenheira Agrônoma</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700"><strong>Dores:</strong> Atende 80+ famílias. Sobrecarga de trabalho. Usa cadernos e planilhas desconexas. Dificuldade de comunicação rápida com os produtores.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Fale Conosco -->
+                    <div id="content-contato" class="hidden fade-in">
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">Fale Conosco</h3>
+                        <p class="text-sm text-gray-500 mb-4">Envie suas sugestões ou relate dificuldades de acesso ao app. Todos os campos são rigorosamente validados.</p>
+                        
+                        <div id="fc-success" class="hidden bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded-xl mb-4 text-sm font-semibold">
+                            ✓ Mensagem enviada com sucesso! Obrigado pelo contato.
+                        </div>
+
+                        <form id="fale-conosco-form" onsubmit="validarFormulario(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-600 mb-1" for="fc-nome">Nome Completo</label>
+                                <input type="text" id="fc-nome" oninput="validarNomeRealtime()" class="w-full p-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:outline-none" placeholder="Ex: João da Silva">
+                                <p id="err-nome" class="hidden text-red-600 text-xs mt-1 font-semibold"></p>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-600 mb-1" for="fc-email">E-mail</label>
+                                <input type="text" id="fc-email" oninput="validarEmailRealtime()" class="w-full p-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:outline-none" placeholder="Ex: joao@gmail.com">
+                                <p id="err-email" class="hidden text-red-600 text-xs mt-1 font-semibold"></p>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="block text-xs font-bold uppercase text-gray-600" for="fc-mensagem">Mensagem</label>
+                                    <span class="text-xs text-gray-400"><span id="char-count">0</span>/500</span>
+                                </div>
+                                <textarea id="fc-mensagem" oninput="validarMensagemRealtime()" rows="4" maxlength="500" class="w-full p-3 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:outline-none" placeholder="Digite sua mensagem de feedback ou dúvida aqui..."></textarea>
+                                <p id="err-mensagem" class="hidden text-red-600 text-xs mt-1 font-semibold"></p>
+                            </div>
+
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-md">
+                                Enviar Feedback
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="bg-green-700 text-white p-6 rounded-2xl shadow-sm">
+                    <h2 class="text-xl font-bold mb-2 flex items-center gap-2">💡 Tecnologia e Usabilidade</h2>
+                    <p class="text-green-100 text-sm mb-4">O aplicativo do Projeto Fartura foi projetado para rodar offline e em redes intermitentes, empoderando o agricultor rural nas decisões de manejo e comercialização.</p>
+                    <ul class="text-sm space-y-2 font-semibold">
+                        <li>🌾 Calendário de Plantação Simplificado</li>
+                        <li>🤝 Canal Direto com Atacadistas Locais</li>
+                        <li>📢 Auxílio de Voz para baixa alfabetização</li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <!-- RIGHT COLUMN: Mobile Mockup -->
+            <section class="lg:col-span-5 flex flex-col items-center">
+                
+                <div class="w-full text-center mb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Simulador de Aplicativo</h2>
+                    <p class="text-sm text-gray-500">Toque nos botões para explorar os recursos</p>
+                </div>
+
+                <div class="mobile-frame">
+                    
+                    <!-- Status Bar -->
+                    <div class="bg-green-700 text-white px-4 py-2 flex justify-between items-center text-xs font-bold z-20 shadow-md">
+                        <span id="clock">09:41</span>
+                        <div class="flex items-center gap-2">
+                            <span title="Modo Sincronização Ativo" class="text-base">☁️</span>
+                            <span>🔋 92%</span>
+                        </div>
+                    </div>
+
+                    <!-- App Content -->
+                    <div id="app-content" class="mobile-content relative"></div>
+
+                    <!-- Bottom Navigation -->
+                    <div class="bottom-nav">
+                        <div onclick="navTo('inicio')" id="nav-inicio" class="nav-item active">
+                            <span class="nav-icon">🏠</span>
+                            <span>Início</span>
+                        </div>
+                        <div onclick="navTo('calendario')" id="nav-calendario" class="nav-item">
+                            <span class="nav-icon">📅</span>
+                            <span>Lavoura</span>
+                        </div>
+                        <div onclick="navTo('mercado')" id="nav-mercado" class="nav-item">
+                            <span class="nav-icon">🛒</span>
+                            <span>Mercado</span>
+                        </div>
+                        <div onclick="navTo('financas')" id="nav-financas" class="nav-item">
+                            <span class="nav-icon">💰</span>
+                            <span>Finanças</span>
+                        </div>
+                        <div onclick="navTo('tecnico')" id="nav-tecnico" class="nav-item">
+                            <span class="nav-icon">💬</span>
+                            <span>Técnico</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Voice Command Modal -->
+    <div id="voice-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-sm p-6 text-center">
+            <span class="text-5xl block mb-2 animate-pulse">🎤</span>
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Simulando Comando de Voz</h3>
+            <p class="text-sm text-gray-500 mb-6">Como o produtor nem sempre sabe escrever, ele pode tocar no microfone e dizer comandos simples.</p>
+            
+            <div class="space-y-2 mb-6">
+                <button onclick="enviarComandoVoz('carteira')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl text-sm transition text-left flex items-center gap-2">
+                    💬 "Quero ver meu dinheiro"
+                </button>
+                <button onclick="enviarComandoVoz('plantio')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl text-sm transition text-left flex items-center gap-2">
+                    💬 "Como está minha lavoura?"
+                </button>
+                <button onclick="enviarComandoVoz('falar_ana')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-xl text-sm transition text-left flex items-center gap-2">
+                    💬 "Chamar a agrônoma Ana"
+                </button>
+            </div>
+
+            <button onclick="toggleVoiceModal()" class="w-full bg-red-100 text-red-700 font-bold py-2 rounded-xl text-sm">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/script.js"></script>
+
+</body>
+</html>
