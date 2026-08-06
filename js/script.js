@@ -1,25 +1,10 @@
 // ===== JAVASCRIPT =====
 
 // --- 1. Report Context Tabs Logic ---
-function changeTab(tabName) {
-    ['contexto', 'dados', 'personas', 'mural', 'contato'].forEach(t => {
-        document.getElementById('tab-' + t).className = "aba-fartura";
-        document.getElementById('content-' + t).classList.add('hidden');
-    });
-
-    document.getElementById('tab-' + tabName).className = "aba-fartura aba-fartura--ativa";
-    document.getElementById('content-' + tabName).classList.remove('hidden');
-
-    if (tabName === 'dados' && !window.ibgeChartInstance) {
-        renderIBGEChart();
-    }
-
-    // Montagem preguiçosa do componente React: só ocupa memória/CPU quando
-    // a aba do Mural é aberta pela primeira vez.
-    if (tabName === 'mural' && window.FarturaMural) {
-        window.FarturaMural.montar('mural-root');
-    }
-}
+// A troca de aba (contexto/dados/personas/mural/contato) é responsabilidade
+// do roteador React em src/router/AbasRouterFartura.jsx, montado em
+// #abas-router-root. Este arquivo só expõe renderIBGEChart() e
+// window.FarturaMural, que o roteador chama nos momentos certos.
 
 // --- 2. Chart.js Implementation for Context Tab ---
 function renderIBGEChart() {
@@ -158,11 +143,11 @@ function toggleVoiceModal() {
 function enviarComandoVoz(comando) {
     toggleVoiceModal();
     if (comando === 'carteira') {
-        navTo('financas');
+        window.FarturaRouterSimulador.irPara('financas');
     } else if (comando === 'plantio') {
-        navTo('calendario');
+        window.FarturaRouterSimulador.irPara('calendario');
     } else if (comando === 'falar_ana') {
-        navTo('tecnico');
+        window.FarturaRouterSimulador.irPara('tecnico');
     }
 }
 
@@ -196,11 +181,11 @@ const screens = {
             </div>
 
             <div class="px-4 mt-6 space-y-3">
-                <button onclick="navTo('calendario')" class="w-full bg-white border border-gray-200 text-gray-800 text-base font-bold py-4 rounded-xl shadow-sm flex items-center justify-between px-4 transition transform active:scale-95">
+                <button onclick="FarturaRouterSimulador.irPara('calendario')" class="w-full bg-white border border-gray-200 text-gray-800 text-base font-bold py-4 rounded-xl shadow-sm flex items-center justify-between px-4 transition transform active:scale-95">
                     <span class="flex items-center gap-2">${ICONES.broto()} Ver Lavouras</span>
                     <span>${ICONES.seta()}</span>
                 </button>
-                <button onclick="navTo('mercado')" class="w-full bg-white border border-gray-200 text-gray-800 text-base font-bold py-4 rounded-xl shadow-sm flex items-center justify-between px-4 transition transform active:scale-95">
+                <button onclick="FarturaRouterSimulador.irPara('mercado')" class="w-full bg-white border border-gray-200 text-gray-800 text-base font-bold py-4 rounded-xl shadow-sm flex items-center justify-between px-4 transition transform active:scale-95">
                     <span class="flex items-center gap-2">${ICONES.carrinho()} Vender Produtos</span>
                     <span>${ICONES.seta()}</span>
                 </button>
@@ -230,7 +215,7 @@ const screens = {
                         <button onclick="alert('Tarefa agendada: Irrigar amanhã de manhã.')" class="flex-1 py-2 rounded-xl font-bold text-xs flex flex-col items-center gap-1" style="background: rgba(47,93,107,0.1); color: var(--ceu-chuva)">
                             ${ICONES.gota()} Irrigar
                         </button>
-                        <button onclick="navTo('tecnico')" class="flex-1 py-2 rounded-xl font-bold text-xs flex flex-col items-center gap-1" style="background: rgba(162,59,46,0.1); color: var(--vermelho-alerta)">
+                        <button onclick="FarturaRouterSimulador.irPara('tecnico')" class="flex-1 py-2 rounded-xl font-bold text-xs flex flex-col items-center gap-1" style="background: rgba(162,59,46,0.1); color: var(--vermelho-alerta)">
                             ${ICONES.inseto()} Alerta Praga
                         </button>
                     </div>
@@ -244,7 +229,7 @@ const screens = {
                             <p class="text-xs font-black animate-pulse" style="color: var(--mandioca-escura)">Pronto para comercialização!</p>
                         </div>
                     </div>
-                    <button onclick="navTo('mercado')" class="botao botao--principal w-full">
+                    <button onclick="FarturaRouterSimulador.irPara('mercado')" class="botao botao--principal w-full">
                         ${ICONES.trator()} Oferecer no Mercado Direto
                     </button>
                 </div>
@@ -385,33 +370,13 @@ const screens = {
     `
 };
 
-// --- 6. Navigation with Automatic State Refresh ---
-function navTo(screenId) {
-    document.querySelectorAll('.nav-item').forEach(el => {
-        el.classList.remove('active', 'text-green-600');
-        el.classList.add('text-gray-500');
-    });
-    const activeNav = document.getElementById('nav-' + screenId);
-    activeNav.classList.remove('text-gray-500');
-    activeNav.classList.add('active');
-
-    const contentDiv = document.getElementById('app-content');
-    contentDiv.innerHTML = screens[screenId];
-
-    if(screenId === 'financas') {
-        setTimeout(() => {
-            updateFinanceData();
-        }, 50);
-    }
-
-    // A tela Início é reconstruída a cada navegação, então o componente React
-    // de previsão do tempo precisa ser montado de novo toda vez que ela abre.
-    if (screenId === 'inicio' && window.FarturaPrevisao) {
-        setTimeout(() => {
-            window.FarturaPrevisao.montar('previsao-root');
-        }, 0);
-    }
-}
+// Exposta como global só para leitura: o roteador em
+// src/router/SimuladorRouterFartura.jsx consulta este objeto para saber qual
+// HTML injetar em #app-content a cada troca de rota. A navegação em si
+// (destacar o item ativo, trocar o innerHTML, dar timing certo para os
+// efeitos de Finanças/Previsão do Tempo) é responsabilidade do roteador —
+// veja ativarTela() nesse arquivo.
+window.FarturaTelas = screens;
 
 // --- 7. Real-Time Finance Estimator Simulator ---
 function updateFinanceData() {
@@ -474,8 +439,6 @@ setInterval(() => {
     if(clockEl) clockEl.innerText = timeStr;
 }, 1000);
 
-// --- Initialization ---
-window.onload = () => {
-    changeTab('contexto');
-    navTo('inicio');
-};
+// A ativação inicial da aba "O Problema" e da tela "Início" não precisa mais
+// de um window.onload manual: AbasRouterFartura e SimuladorRouterFartura
+// (src/router/) já nascem apontando para essas rotas assim que montam.

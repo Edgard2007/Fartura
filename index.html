@@ -16,6 +16,12 @@
 </head>
 <body class="antialiased">
 
+    <!-- Raízes dos roteadores (react-router-dom via MemoryRouter): não renderizam
+         nada na tela, só sincronizam o DOM estático abaixo com a rota interna
+         atual. Ver src/router/. -->
+    <div id="abas-router-root"></div>
+    <div id="simulador-router-root"></div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
         <!-- Header -->
@@ -44,11 +50,11 @@
 
                     <!-- Interactive Tabs -->
                     <div class="flex flex-wrap gap-1 mb-6 border-b border-[color:rgba(53,38,28,0.12)] pb-1" id="tab-container">
-                        <button onclick="changeTab('contexto')" id="tab-contexto" class="aba-fartura aba-fartura--ativa">O Problema</button>
-                        <button onclick="changeTab('dados')" id="tab-dados" class="aba-fartura">Dados do Campo</button>
-                        <button onclick="changeTab('personas')" id="tab-personas" class="aba-fartura">Personas</button>
-                        <button onclick="changeTab('mural')" id="tab-mural" class="aba-fartura"><span data-icone="loja"></span> Mural</button>
-                        <button onclick="changeTab('contato')" id="tab-contato" class="aba-fartura">Fale Conosco</button>
+                        <button onclick="FarturaRouterAbas.irPara('contexto')" id="tab-contexto" class="aba-fartura aba-fartura--ativa">O Problema</button>
+                        <button onclick="FarturaRouterAbas.irPara('dados')" id="tab-dados" class="aba-fartura">Dados do Campo</button>
+                        <button onclick="FarturaRouterAbas.irPara('personas')" id="tab-personas" class="aba-fartura">Personas</button>
+                        <button onclick="FarturaRouterAbas.irPara('mural')" id="tab-mural" class="aba-fartura"><span data-icone="loja"></span> Mural</button>
+                        <button onclick="FarturaRouterAbas.irPara('contato')" id="tab-contato" class="aba-fartura">Fale Conosco</button>
                     </div>
 
                     <!-- Tab Content: Contexto -->
@@ -187,23 +193,23 @@
 
                     <!-- Bottom Navigation -->
                     <div class="bottom-nav">
-                        <div onclick="navTo('inicio')" id="nav-inicio" class="nav-item active">
+                        <div onclick="FarturaRouterSimulador.irPara('inicio')" id="nav-inicio" class="nav-item active">
                             <span data-icone="casa"></span>
                             <span>Início</span>
                         </div>
-                        <div onclick="navTo('calendario')" id="nav-calendario" class="nav-item">
+                        <div onclick="FarturaRouterSimulador.irPara('calendario')" id="nav-calendario" class="nav-item">
                             <span data-icone="calendario"></span>
                             <span>Lavoura</span>
                         </div>
-                        <div onclick="navTo('mercado')" id="nav-mercado" class="nav-item">
+                        <div onclick="FarturaRouterSimulador.irPara('mercado')" id="nav-mercado" class="nav-item">
                             <span data-icone="carrinho"></span>
                             <span>Mercado</span>
                         </div>
-                        <div onclick="navTo('financas')" id="nav-financas" class="nav-item">
+                        <div onclick="FarturaRouterSimulador.irPara('financas')" id="nav-financas" class="nav-item">
                             <span data-icone="carteira"></span>
                             <span>Finanças</span>
                         </div>
-                        <div onclick="navTo('tecnico')" id="nav-tecnico" class="nav-item">
+                        <div onclick="FarturaRouterSimulador.irPara('tecnico')" id="nav-tecnico" class="nav-item">
                             <span data-icone="chat"></span>
                             <span>Técnico</span>
                         </div>
@@ -254,6 +260,10 @@
     <script src="/js/mural-comunidade.bundle.js"></script>
     <script src="/js/previsao-tempo.bundle.js"></script>
     <script src="/js/script.js"></script>
+    <!-- Carregado por último de propósito: os roteadores dependem de
+         window.FarturaTelas, window.renderIBGEChart e window.updateFinanceData,
+         todos definidos em script.js, e montam assim que este bundle executa. -->
+    <script src="/js/router-fartura.bundle.js"></script>
 
 </body>
 </html>
