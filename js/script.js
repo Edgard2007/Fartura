@@ -2,16 +2,22 @@
 
 // --- 1. Report Context Tabs Logic ---
 function changeTab(tabName) {
-    ['contexto', 'dados', 'personas', 'contato'].forEach(t => {
-        document.getElementById('tab-' + t).className = "px-4 py-2 font-bold rounded-t-lg text-gray-500 hover:bg-gray-50 transition-colors text-sm";
+    ['contexto', 'dados', 'personas', 'mural', 'contato'].forEach(t => {
+        document.getElementById('tab-' + t).className = "aba-fartura";
         document.getElementById('content-' + t).classList.add('hidden');
     });
 
-    document.getElementById('tab-' + tabName).className = "px-4 py-2 font-bold rounded-t-lg bg-green-50 text-green-700 border-b-2 border-green-600 transition-colors text-sm";
+    document.getElementById('tab-' + tabName).className = "aba-fartura aba-fartura--ativa";
     document.getElementById('content-' + tabName).classList.remove('hidden');
 
     if (tabName === 'dados' && !window.ibgeChartInstance) {
         renderIBGEChart();
+    }
+
+    // Montagem preguiçosa do componente React: só ocupa memória/CPU quando
+    // a aba do Mural é aberta pela primeira vez.
+    if (tabName === 'mural' && window.FarturaMural) {
+        window.FarturaMural.montar('mural-root');
     }
 }
 
@@ -164,43 +170,39 @@ function enviarComandoVoz(comando) {
 const screens = {
     inicio: `
         <div class="fade-in pb-8">
-            <div class="bg-green-700 pt-4 pb-6 px-4 rounded-b-[30px] shadow-sm flex justify-between items-center text-white">
+            <div class="pt-4 pb-6 px-4 rounded-b-[30px] shadow-sm flex justify-between items-center text-white" style="background: var(--terra)">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-2xl">👨🏽‍🌾</div>
+                    <div class="monograma monograma--broto">JS</div>
                     <div>
                         <h2 class="text-lg font-bold">Bom dia, João!</h2>
                         <p class="text-xs opacity-80">Sítio Esperança</p>
                     </div>
                 </div>
-                <button class="text-xl bg-green-600/50 p-2 rounded-full" onclick="alert('Abrindo configurações da conta do produtor.')">⚙️</button>
+                <button class="p-2 rounded-full" style="background: rgba(242,232,213,0.15)" onclick="alert('Abrindo configurações da conta do produtor.')">${ICONES.engrenagem()}</button>
             </div>
             
             <div class="px-4 -mt-4">
-                <div class="bg-white rounded-2xl shadow-md p-4 flex items-center justify-between border border-gray-100">
-                    <div class="text-5xl">🌤️</div>
-                    <div>
-                        <h3 class="text-3xl font-extrabold text-gray-800">28°C</h3>
-                        <p class="text-xs font-bold text-gray-500">Clima favorável para colheita hoje.</p>
-                    </div>
+                <div id="previsao-root" class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                    <p class="text-xs text-gray-400 p-4">Carregando previsão…</p>
                 </div>
             </div>
 
-            <div class="mx-4 mt-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 rounded-2xl shadow-sm text-center">
+            <div class="mx-4 mt-6 text-white p-4 rounded-2xl shadow-sm text-center" style="background: var(--ceu-chuva)">
                 <p class="text-xs uppercase font-bold tracking-wider mb-2">Comando de Voz Ativado</p>
                 <p class="text-sm font-semibold mb-3">Tem dificuldade para ler? Fale com o Fartura!</p>
-                <button onclick="toggleVoiceModal()" class="mx-auto bg-white text-green-700 font-extrabold px-6 py-3 rounded-full flex items-center gap-2 text-sm shadow-md transition transform active:scale-95">
-                    <span class="text-lg">🎤</span> Falar um Comando
+                <button onclick="toggleVoiceModal()" class="botao botao--principal mx-auto">
+                    ${ICONES.microfone()} Falar um Comando
                 </button>
             </div>
 
             <div class="px-4 mt-6 space-y-3">
                 <button onclick="navTo('calendario')" class="w-full bg-white border border-gray-200 text-gray-800 text-base font-bold py-4 rounded-xl shadow-sm flex items-center justify-between px-4 transition transform active:scale-95">
-                    <span class="flex items-center gap-2">🌽 Ver Lavouras</span>
-                    <span>➔</span>
+                    <span class="flex items-center gap-2">${ICONES.broto()} Ver Lavouras</span>
+                    <span>${ICONES.seta()}</span>
                 </button>
                 <button onclick="navTo('mercado')" class="w-full bg-white border border-gray-200 text-gray-800 text-base font-bold py-4 rounded-xl shadow-sm flex items-center justify-between px-4 transition transform active:scale-95">
-                    <span class="flex items-center gap-2">🛒 Vender Produtos</span>
-                    <span>➔</span>
+                    <span class="flex items-center gap-2">${ICONES.carrinho()} Vender Produtos</span>
+                    <span>${ICONES.seta()}</span>
                 </button>
             </div>
         </div>
@@ -209,41 +211,41 @@ const screens = {
         <div class="fade-in pb-8">
             <div class="p-4 bg-white shadow-sm flex items-center justify-between sticky top-0 z-10">
                 <h2 class="text-xl font-bold text-gray-800">Minha Lavoura</h2>
-                <button class="text-lg bg-gray-100 p-2 rounded-full" onclick="alert('Tocando áudio de instruções da página.')">🔊 Ler Tela</button>
+                <button class="text-xs font-bold bg-gray-100 px-3 py-2 rounded-full flex items-center gap-1" onclick="alert('Tocando áudio de instruções da página.')">${ICONES.ondaVoz()} Ler Tela</button>
             </div>
 
             <div class="p-4 space-y-4">
-                <div class="bg-white border-2 border-green-500 rounded-2xl p-4 shadow-sm">
+                <div class="bg-white border-2 rounded-2xl p-4 shadow-sm" style="border-color: var(--broto)">
                     <div class="flex items-center gap-4 mb-3">
-                        <div class="text-4xl">🌽</div>
+                        <div style="width:2.4rem;height:2.4rem;color:var(--broto)">${ICONES.broto()}</div>
                         <div>
                             <h3 class="text-lg font-bold text-gray-800">Milho Híbrido</h3>
-                            <p class="text-xs font-bold text-green-700">Restam 15 dias para a colheita prevista</p>
+                            <p class="text-xs font-bold" style="color:var(--broto)">Restam 15 dias para a colheita prevista</p>
                         </div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-3 mb-4">
-                        <div class="bg-green-500 h-3 rounded-full w-[80%]"></div>
+                        <div class="h-3 rounded-full w-[80%]" style="background: var(--broto)"></div>
                     </div>
                     <div class="flex justify-between gap-2 border-t pt-3 border-gray-100">
-                        <button onclick="alert('Tarefa agendada: Irrigar amanhã de manhã.')" class="flex-1 bg-blue-50 text-blue-700 py-2 rounded-xl font-bold text-xs flex flex-col items-center">
-                            <span class="text-lg">💧</span> Irrigar
+                        <button onclick="alert('Tarefa agendada: Irrigar amanhã de manhã.')" class="flex-1 py-2 rounded-xl font-bold text-xs flex flex-col items-center gap-1" style="background: rgba(47,93,107,0.1); color: var(--ceu-chuva)">
+                            ${ICONES.gota()} Irrigar
                         </button>
-                        <button onclick="navTo('tecnico')" class="flex-1 bg-red-50 text-red-700 py-2 rounded-xl font-bold text-xs flex flex-col items-center">
-                            <span class="text-lg">🐛</span> Alerta Praga
+                        <button onclick="navTo('tecnico')" class="flex-1 py-2 rounded-xl font-bold text-xs flex flex-col items-center gap-1" style="background: rgba(162,59,46,0.1); color: var(--vermelho-alerta)">
+                            ${ICONES.inseto()} Alerta Praga
                         </button>
                     </div>
                 </div>
 
-                <div class="bg-white border-2 border-amber-400 rounded-2xl p-4 shadow-sm bg-amber-50">
+                <div class="border-2 rounded-2xl p-4 shadow-sm" style="border-color: var(--milho); background: #FBF1DC">
                     <div class="flex items-center gap-4 mb-3">
-                        <div class="text-4xl">🥬</div>
+                        <div style="width:2.4rem;height:2.4rem;color:var(--mandioca-escura)">${ICONES.broto()}</div>
                         <div>
                             <h3 class="text-lg font-bold text-gray-800">Alface Lisa</h3>
-                            <p class="text-xs font-black text-amber-700 animate-pulse">Pronto para comercialização!</p>
+                            <p class="text-xs font-black animate-pulse" style="color: var(--mandioca-escura)">Pronto para comercialização!</p>
                         </div>
                     </div>
-                    <button onclick="navTo('mercado')" class="w-full bg-amber-400 text-amber-950 font-black py-3 rounded-xl flex items-center justify-center gap-2 text-sm">
-                        🚜 Oferecer no Mercado Direto
+                    <button onclick="navTo('mercado')" class="botao botao--principal w-full">
+                        ${ICONES.trator()} Oferecer no Mercado Direto
                     </button>
                 </div>
             </div>
@@ -254,7 +256,7 @@ const screens = {
             <div class="p-4 bg-white shadow-sm sticky top-0 z-10">
                 <h2 class="text-xl font-bold text-gray-800 mb-3">Mercado de Vendas</h2>
                 <div class="flex bg-gray-100 p-1 rounded-xl text-xs font-bold">
-                    <button class="flex-1 py-2 bg-white shadow-sm rounded-lg text-green-700">Ofertas Próximas</button>
+                    <button class="flex-1 py-2 bg-white shadow-sm rounded-lg" style="color: var(--mandioca-escura)">Ofertas Próximas</button>
                     <button class="flex-1 py-2 text-gray-500" onclick="alert('Navegando para cadastro de produtos novos.')">Anunciar Safra</button>
                 </div>
             </div>
@@ -266,17 +268,17 @@ const screens = {
                             <h4 class="font-bold text-base text-gray-800">Sacolão do Bairro</h4>
                             <p class="text-xs text-gray-400">Distância: 8.5 km</p>
                         </div>
-                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-lg font-bold">Verificado</span>
+                        <span class="text-xs px-2 py-1 rounded-lg font-bold" style="background: rgba(79,109,52,0.15); color: var(--broto)">Verificado</span>
                     </div>
                     
-                    <div class="bg-green-50 p-3 rounded-xl mb-3 flex justify-between items-center text-sm">
-                        <span class="font-bold text-gray-700 flex items-center gap-2">🥬 Caixa de Alface</span>
-                        <span class="text-lg font-black text-green-700">R$ 45,00</span>
+                    <div class="p-3 rounded-xl mb-3 flex justify-between items-center text-sm" style="background: rgba(79,109,52,0.1)">
+                        <span class="font-bold text-gray-700 flex items-center gap-2" style="color:var(--broto)">${ICONES.broto()} Caixa de Alface</span>
+                        <span class="text-lg font-black" style="color:var(--broto)">R$ 45,00</span>
                     </div>
 
                     <div class="flex gap-2">
-                        <button onclick="alert('Proposta de entrega enviada ao Sacolão! Entraremos em contato.')" class="flex-1 bg-green-600 text-white font-bold py-2 rounded-xl text-xs flex justify-center items-center gap-1">🤝 Fechar Venda</button>
-                        <a href="tel:0800000000" class="bg-blue-100 text-blue-700 px-4 rounded-xl flex items-center justify-center">📞</a>
+                        <button onclick="alert('Proposta de entrega enviada ao Sacolão! Entraremos em contato.')" class="botao botao--principal flex-1 text-xs">${ICONES.apertoMao()} Fechar Venda</button>
+                        <a href="tel:0800000000" class="px-4 rounded-xl flex items-center justify-center" style="background: rgba(47,93,107,0.12); color: var(--ceu-chuva)">${ICONES.telefone()}</a>
                     </div>
                 </div>
             </div>
@@ -297,7 +299,7 @@ const screens = {
                     <div>
                         <label class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
                             <span>Tamanho da Área (Hectares):</span>
-                            <span class="font-bold text-green-700"><span id="val-area">2</span> ha</span>
+                            <span class="font-bold fonte-dado" style="color: var(--mandioca-escura)"><span id="val-area">2</span> ha</span>
                         </label>
                         <input type="range" id="slider-area" min="1" max="10" value="2" oninput="updateFinanceData()" class="w-full accent-green-600 h-2 bg-gray-200 rounded-lg cursor-pointer">
                     </div>
@@ -330,12 +332,12 @@ const screens = {
                     </div>
                 </div>
 
-                <div class="bg-emerald-600 text-white p-4 rounded-2xl flex items-center justify-between shadow-sm">
+                <div class="text-white p-4 rounded-2xl flex items-center justify-between shadow-sm" style="background: var(--broto)">
                     <div>
                         <p class="text-xs font-bold opacity-80">Lucro Estimado Sobrando</p>
-                        <p class="text-2xl font-black">R$ <span id="disp-lucro">1.700,00</span></p>
+                        <p class="text-2xl font-black fonte-dado">R$ <span id="disp-lucro">1.700,00</span></p>
                     </div>
-                    <span class="text-4xl">💰</span>
+                    <span style="width:2.2rem;height:2.2rem">${ICONES.moeda()}</span>
                 </div>
 
                 <div class="bg-white p-3 rounded-xl border border-gray-100">
@@ -349,13 +351,13 @@ const screens = {
     tecnico: `
         <div class="fade-in h-full flex flex-col">
             <div class="bg-white p-3 shadow-sm sticky top-0 z-10 flex items-center gap-3">
-                <div class="w-11 h-11 bg-green-100 rounded-full flex items-center justify-center text-xl relative">
-                    👩‍🔬
-                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
+                <div class="relative">
+                    <div class="monograma monograma--ceu" style="width:2.75rem;height:2.75rem;font-size:0.9rem">AP</div>
+                    <span class="absolute bottom-0 right-0 w-3 h-3 border-2 border-white rounded-full" style="background: var(--broto)"></span>
                 </div>
                 <div>
                     <h2 class="text-sm font-bold text-gray-800 leading-tight">Agrônoma Ana Paula</h2>
-                    <p class="text-[10px] text-green-600 font-bold">EMATER Local - Online</p>
+                    <p class="text-[10px] font-bold" style="color: var(--broto)">EMATER Local - Online</p>
                 </div>
             </div>
 
@@ -366,18 +368,18 @@ const screens = {
                     <span class="text-[9px] text-gray-400 mt-1 block">09:30</span>
                 </div>
 
-                <div class="bg-green-100 p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] border border-green-200 self-end">
-                    <p class="text-xs text-green-900">Bom dia dona Ana, o remédio que você receitou funcionou muito bem. Obrigado!</p>
-                    <span class="text-[9px] text-green-700 mt-1 flex justify-end items-center gap-1">09:35 <span class="text-blue-500">✓✓</span></span>
+                <div class="p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] border self-end" style="background: rgba(79,109,52,0.12); border-color: rgba(79,109,52,0.3)">
+                    <p class="text-xs" style="color: var(--terra)">Bom dia dona Ana, o remédio que você receitou funcionou muito bem. Obrigado!</p>
+                    <span class="text-[9px] mt-1 flex justify-end items-center gap-1" style="color: var(--broto)">09:35 <span style="width:0.9rem;height:0.9rem;color:var(--ceu-chuva)">${ICONES.checagemDupla()}</span></span>
                 </div>
             </div>
 
             <div class="bg-gray-100 p-3 border-t border-gray-200 flex items-center gap-2 mt-auto">
-                <button class="bg-blue-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-base flex-shrink-0" onclick="alert('Abrindo Câmera para registrar praga.')">📷</button>
+                <button class="text-white w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: var(--ceu-chuva)" onclick="alert('Abrindo Câmera para registrar praga.')">${ICONES.camera()}</button>
                 <div class="flex-1 bg-white h-10 rounded-full border border-gray-300 px-3 flex items-center">
                     <span class="text-gray-400 text-xs">Mensagem...</span>
                 </div>
-                <button onclick="toggleVoiceModal()" class="bg-green-600 hover:bg-green-700 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-lg flex-shrink-0 transition transform active:scale-95">🎤</button>
+                <button onclick="toggleVoiceModal()" class="botao botao--principal w-14 h-14 rounded-full flex-shrink-0 p-0">${ICONES.microfone()}</button>
             </div>
         </div>
     `
@@ -400,6 +402,14 @@ function navTo(screenId) {
         setTimeout(() => {
             updateFinanceData();
         }, 50);
+    }
+
+    // A tela Início é reconstruída a cada navegação, então o componente React
+    // de previsão do tempo precisa ser montado de novo toda vez que ela abre.
+    if (screenId === 'inicio' && window.FarturaPrevisao) {
+        setTimeout(() => {
+            window.FarturaPrevisao.montar('previsao-root');
+        }, 0);
     }
 }
 

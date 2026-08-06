@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Fartura | ODS 2 e Inovação</title>
+
+    <!-- External Dependencies -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="antialiased">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- Header -->
+        <header class="cabecalho-fartura mb-10">
+            <svg class="cabecalho-fartura__curvas" viewBox="0 0 800 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M-20 40 C 150 10, 300 90, 480 50 S 780 10, 900 60" stroke="#F2E8D5" stroke-width="1.5" fill="none"/>
+                <path d="M-20 80 C 150 50, 300 130, 480 90 S 780 50, 900 100" stroke="#F2E8D5" stroke-width="1.5" fill="none"/>
+                <path d="M-20 120 C 150 90, 300 170, 480 130 S 780 90, 900 140" stroke="#F2E8D5" stroke-width="1.5" fill="none"/>
+                <path d="M-20 160 C 150 130, 300 210, 480 170 S 780 130, 900 180" stroke="#F2E8D5" stroke-width="1.5" fill="none"/>
+            </svg>
+            <span class="cabecalho-fartura__marca">ODS 2 · Segurança Alimentar</span>
+            <h1 class="cabecalho-fartura__titulo">Projeto Fartura</h1>
+            <p class="cabecalho-fartura__subtitulo">Tecnologia contra a fome: agricultura familiar e inovação a serviço de quem planta.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+            <!-- LEFT COLUMN: Report Context & Data -->
+            <section class="lg:col-span-7 flex flex-col gap-6">
+
+                <div class="cartao-fartura">
+                    <h2 class="text-2xl font-bold text-[color:var(--texto-principal)] mb-2">Central do Relatório</h2>
+                    <p class="text-[color:var(--texto-suave)] mb-6 text-sm leading-relaxed">
+                        Esta seção reúne as principais descobertas conceituais sobre o Projeto Fartura e o cenário de insegurança alimentar. Navegue pelas abas para explorar as estatísticas, conhecer as necessidades reais dos produtores, acompanhar o mural de ofertas e enviar suas sugestões através do nosso canal validado.
+                    </p>
+
+                    <!-- Interactive Tabs -->
+                    <div class="flex flex-wrap gap-1 mb-6 border-b border-[color:rgba(53,38,28,0.12)] pb-1" id="tab-container">
+                        <button onclick="changeTab('contexto')" id="tab-contexto" class="aba-fartura aba-fartura--ativa">O Problema</button>
+                        <button onclick="changeTab('dados')" id="tab-dados" class="aba-fartura">Dados do Campo</button>
+                        <button onclick="changeTab('personas')" id="tab-personas" class="aba-fartura">Personas</button>
+                        <button onclick="changeTab('mural')" id="tab-mural" class="aba-fartura"><span data-icone="loja"></span> Mural</button>
+                        <button onclick="changeTab('contato')" id="tab-contato" class="aba-fartura">Fale Conosco</button>
+                    </div>
+
+                    <!-- Tab Content: Contexto -->
+                    <div id="content-contexto" class="fade-in">
+                        <div class="caixa-alerta mb-4">
+                            <h3 class="text-lg font-bold flex items-center gap-2"><span data-icone="alerta"></span> Cenário Crítico</h3>
+                            <p class="mt-2 text-sm" style="color: var(--texto-principal)">Em 2022, <strong>733 milhões</strong> de pessoas enfrentavam a fome no mundo (FAO). No Brasil, <strong>21 milhões</strong> sofrem com insegurança alimentar grave (PENSSAN).</p>
+                        </div>
+                        <h3 class="text-lg font-bold mt-6 mb-2">Metas Foco (2.3 e 2.4)</h3>
+                        <ul class="space-y-3 text-[color:var(--texto-suave)] text-sm">
+                            <li class="flex items-start gap-2"><span data-icone="tendencia" class="mt-0.5 text-[color:var(--mandioca)]"></span> <span><strong class="text-[color:var(--texto-principal)]">Produtividade:</strong> Dobrar a renda de pequenos produtores, garantindo acesso a crédito, tecnologia e mercados.</span></li>
+                            <li class="flex items-start gap-2"><span data-icone="broto" class="mt-0.5 text-[color:var(--broto)]"></span> <span><strong class="text-[color:var(--texto-principal)]">Sustentabilidade:</strong> Práticas agrícolas resilientes às mudanças climáticas (secas, pragas).</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Tab Content: Dados -->
+                    <div id="content-dados" class="hidden fade-in">
+                        <h3 class="text-lg font-bold text-center mb-2">A Força da Agricultura Familiar no Brasil</h3>
+                        <p class="text-xs text-center text-[color:var(--texto-suave)] mb-4">Dados: Censo Agropecuário IBGE (2017)</p>
+
+                        <div class="chart-container">
+                            <canvas id="ibgeChart"></canvas>
+                        </div>
+
+                        <div class="mt-4 p-4 rounded-xl text-sm font-medium text-center" style="background: rgba(79,109,52,0.12); color: var(--broto)">
+                            Apesar de representarem 77% dos estabelecimentos e produzirem 70% da nossa comida, esses agricultores possuem o <strong>menor acesso à tecnologia, crédito e assistência</strong>.
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Personas -->
+                    <div id="content-personas" class="hidden fade-in space-y-4">
+                        <div class="p-4 rounded-xl border" style="background: var(--palha-clara); border-color: rgba(227,168,59,0.5)">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="monograma monograma--broto">JS</div>
+                                <div>
+                                    <h4 class="font-bold text-[color:var(--texto-principal)]">João da Silva, 52 anos</h4>
+                                    <p class="text-xs text-[color:var(--texto-suave)]">Agricultor Familiar | Ensino Fundamental Incompleto</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-[color:var(--texto-principal)]"><strong>Dores:</strong> Perde safras por falta de previsão climática, não sabe identificar pragas, vende barato para atravessadores. Usa smartphone básico e tem internet limitada.</p>
+                        </div>
+                        <div class="p-4 rounded-xl border" style="background: var(--palha-clara); border-color: rgba(47,93,107,0.35)">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="monograma monograma--ceu">AP</div>
+                                <div>
+                                    <h4 class="font-bold text-[color:var(--texto-principal)]">Ana Paula, 34 anos</h4>
+                                    <p class="text-xs text-[color:var(--texto-suave)]">Extensionista Rural EMATER | Engenheira Agrônoma</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-[color:var(--texto-principal)]"><strong>Dores:</strong> Atende 80+ famílias. Sobrecarga de trabalho. Usa cadernos e planilhas desconexas. Dificuldade de comunicação rápida com os produtores.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Mural da Comunidade (React) -->
+                    <div id="content-mural" class="hidden fade-in">
+                        <p class="text-sm text-[color:var(--texto-suave)] mb-4">
+                            Produtores publicam a colheita disponível; sacolões, cooperativas e atacadistas locais encontram a oferta mais próxima. Nenhum dado é armazenado além desta sessão do navegador — protótipo sem backend.
+                        </p>
+                        <div id="mural-root">
+                            <p class="text-sm text-[color:var(--texto-suave)]">Carregando mural…</p>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Fale Conosco -->
+                    <div id="content-contato" class="hidden fade-in">
+                        <h3 class="text-lg font-bold mb-2">Fale Conosco</h3>
+                        <p class="text-sm text-[color:var(--texto-suave)] mb-4">Envie suas sugestões ou relate dificuldades de acesso ao app. Todos os campos são rigorosamente validados.</p>
+
+                        <div id="fc-success" class="hidden mural-banner mural-banner--sucesso mb-4 flex items-center gap-2">
+                            <span data-icone="checagem"></span> Mensagem enviada com sucesso! Obrigado pelo contato.
+                        </div>
+
+                        <form id="fale-conosco-form" onsubmit="validarFormulario(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-[color:var(--texto-suave)] mb-1" for="fc-nome">Nome Completo</label>
+                                <input type="text" id="fc-nome" oninput="validarNomeRealtime()" class="w-full p-3 rounded-xl text-sm focus:outline-none" style="border:1px solid rgba(53,38,28,0.2)" placeholder="Ex: João da Silva">
+                                <p id="err-nome" class="hidden mural-erro mt-1"></p>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-[color:var(--texto-suave)] mb-1" for="fc-email">E-mail</label>
+                                <input type="text" id="fc-email" oninput="validarEmailRealtime()" class="w-full p-3 rounded-xl text-sm focus:outline-none" style="border:1px solid rgba(53,38,28,0.2)" placeholder="Ex: joao@gmail.com">
+                                <p id="err-email" class="hidden mural-erro mt-1"></p>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="block text-xs font-bold uppercase text-[color:var(--texto-suave)]" for="fc-mensagem">Mensagem</label>
+                                    <span class="text-xs text-[color:var(--texto-suave)]"><span id="char-count">0</span>/500</span>
+                                </div>
+                                <textarea id="fc-mensagem" oninput="validarMensagemRealtime()" rows="4" maxlength="500" class="w-full p-3 rounded-xl text-sm focus:outline-none" style="border:1px solid rgba(53,38,28,0.2)" placeholder="Digite sua mensagem de feedback ou dúvida aqui..."></textarea>
+                                <p id="err-mensagem" class="hidden mural-erro mt-1"></p>
+                            </div>
+
+                            <button type="submit" class="botao botao--principal w-full py-3">
+                                Enviar Feedback
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="cartao-fartura cartao-fartura--escuro">
+                    <h2 class="text-xl font-bold mb-2 flex items-center gap-2"><span data-icone="engrenagem"></span> Tecnologia e Usabilidade</h2>
+                    <p class="text-sm mb-4" style="color:var(--texto-sobre-terra-suave)">O aplicativo do Projeto Fartura foi projetado para rodar offline e em redes intermitentes, empoderando o agricultor rural nas decisões de manejo e comercialização.</p>
+                    <ul class="text-sm space-y-2 font-semibold">
+                        <li class="flex items-center gap-2"><span data-icone="calendario"></span> Calendário de Plantação Simplificado</li>
+                        <li class="flex items-center gap-2"><span data-icone="apertoMao"></span> Canal Direto com Atacadistas Locais</li>
+                        <li class="flex items-center gap-2"><span data-icone="ondaVoz"></span> Auxílio de Voz para baixa alfabetização</li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <!-- RIGHT COLUMN: Mobile Mockup -->
+            <section class="lg:col-span-5 flex flex-col items-center">
+
+                <div class="w-full text-center mb-4">
+                    <h2 class="text-2xl font-bold text-[color:var(--texto-principal)]">Simulador de Aplicativo</h2>
+                    <p class="text-sm text-[color:var(--texto-suave)]">Toque nos botões para explorar os recursos</p>
+                </div>
+
+                <div class="mobile-frame">
+
+                    <!-- Status Bar -->
+                    <div class="barra-status px-4 py-2 flex justify-between items-center text-xs font-bold z-20 shadow-md">
+                        <span id="clock">09:41</span>
+                        <div class="flex items-center gap-3">
+                            <span data-icone="nuvemSync" title="Modo Sincronização Ativo"></span>
+                            <span class="flex items-center gap-1"><span data-icone="bateria"></span> 92%</span>
+                        </div>
+                    </div>
+
+                    <!-- App Content -->
+                    <div id="app-content" class="mobile-content relative"></div>
+
+                    <!-- Bottom Navigation -->
+                    <div class="bottom-nav">
+                        <div onclick="navTo('inicio')" id="nav-inicio" class="nav-item active">
+                            <span data-icone="casa"></span>
+                            <span>Início</span>
+                        </div>
+                        <div onclick="navTo('calendario')" id="nav-calendario" class="nav-item">
+                            <span data-icone="calendario"></span>
+                            <span>Lavoura</span>
+                        </div>
+                        <div onclick="navTo('mercado')" id="nav-mercado" class="nav-item">
+                            <span data-icone="carrinho"></span>
+                            <span>Mercado</span>
+                        </div>
+                        <div onclick="navTo('financas')" id="nav-financas" class="nav-item">
+                            <span data-icone="carteira"></span>
+                            <span>Finanças</span>
+                        </div>
+                        <div onclick="navTo('tecnico')" id="nav-tecnico" class="nav-item">
+                            <span data-icone="chat"></span>
+                            <span>Técnico</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <footer class="mt-10 pt-6 text-center text-xs" style="border-top: 1px solid rgba(53,38,28,0.12); color: var(--texto-suave)">
+            <p>Projeto Fartura — relatório e protótipo interativo. Nenhum dado enviado pelos formulários deixa o seu navegador.</p>
+            <p class="mt-1">
+                <a href="/POLITICA_DE_PRIVACIDADE.md" class="underline">Política de Privacidade</a>
+                <span class="mx-2">·</span>
+                <a href="/TERMOS_DE_USO.md" class="underline">Termos de Uso</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Voice Command Modal -->
+    <div id="voice-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="rounded-3xl w-full max-w-sm p-6 text-center" style="background: var(--palha-clara)">
+            <span data-icone="microfone" class="block mb-2 mx-auto animate-pulse" style="width:2.5rem;height:2.5rem;color:var(--mandioca)"></span>
+            <h3 class="text-xl font-bold text-[color:var(--texto-principal)] mb-2">Simulando Comando de Voz</h3>
+            <p class="text-sm text-[color:var(--texto-suave)] mb-6">Como o produtor nem sempre sabe escrever, ele pode tocar no microfone e dizer comandos simples.</p>
+
+            <div class="space-y-2 mb-6">
+                <button onclick="enviarComandoVoz('carteira')" class="botao botao--fantasma w-full justify-start text-left">
+                    <span data-icone="chat"></span> "Quero ver meu dinheiro"
+                </button>
+                <button onclick="enviarComandoVoz('plantio')" class="botao botao--fantasma w-full justify-start text-left">
+                    <span data-icone="chat"></span> "Como está minha lavoura?"
+                </button>
+                <button onclick="enviarComandoVoz('falar_ana')" class="botao botao--fantasma w-full justify-start text-left">
+                    <span data-icone="chat"></span> "Chamar a agrônoma Ana"
+                </button>
+            </div>
+
+            <button onclick="toggleVoiceModal()" class="w-full font-bold py-2 rounded-xl text-sm" style="background: rgba(162,59,46,0.12); color: var(--vermelho-alerta)">
+                Cancelar
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="/js/icones.js"></script>
+    <script src="/js/mural-comunidade.bundle.js"></script>
+    <script src="/js/previsao-tempo.bundle.js"></script>
+    <script src="/js/script.js"></script>
+
+</body>
+</html>
