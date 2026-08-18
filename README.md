@@ -1,15 +1,12 @@
 # Projeto Fartura — React + JSX
 
-Conversão do projeto estático original para uma aplicação React com JSX e Vite.
+Continuação do projeto, agora atualizado para o JSX e o React
 
 ## Stack
 - React
 - JSX
 - Vite
 - React Router
-- Recharts
-- date-fns
-- CSS original do projeto + Tailwind CDN
 
 ## Estrutura
 ```text
@@ -37,8 +34,3 @@ npm install
 npm run dev
 ```
 
-Para produção:
-```bash
-npm run build
-npm run preview
-```
