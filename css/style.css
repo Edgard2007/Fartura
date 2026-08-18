@@ -1,5 +1,6 @@
 /* =====================================================================
    PROJETO FARTURA — SISTEMA VISUAL
+   FEITO POR: Edgard Costa, Lucca Miranda e Otávio Miguel Rocha
    Direção: relatório de campo agronômico, não "app de startup verde".
    Paleta nasce de camadas de solo e colheita; tipografia mistura um
    grotesco técnico (títulos) com um monoespaçado de dado (números/labels),
@@ -66,8 +67,7 @@ h1, h2, h3, h4, .fonte-titulo {
 }
 
 /* ---------------------------------------------------------------------
-   CABEÇALHO — faixa de terra com padrão de curvas de nível (sulcos de
-   plantio em terraço), o elemento-assinatura da página.
+   CABEÇALHO
    --------------------------------------------------------------------- */
 .cabecalho-fartura {
   background-color: var(--terra);
@@ -119,9 +119,29 @@ h1, h2, h3, h4, .fonte-titulo {
   max-width: 40ch;
 }
 
+.cabecalho-fartura__nav {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(242, 232, 213, 0.18);
+}
+
+.cabecalho-fartura__nav .aba-fartura {
+  color: var(--texto-sobre-terra-suave);
+}
+.cabecalho-fartura__nav .aba-fartura:hover { background: rgba(242, 232, 213, 0.1); }
+.cabecalho-fartura__nav .aba-fartura--ativa {
+  color: var(--milho);
+  background: rgba(227, 168, 59, 0.14);
+  border-bottom-color: var(--milho);
+}
+
 /* ---------------------------------------------------------------------
-   CARTÕES — "papel empilhado": uma segunda camada deslocada atrás do
-   cartão principal, lembrando fichas de campo sobrepostas.
+   CARTÕES
    --------------------------------------------------------------------- */
 .cartao-fartura {
   background: var(--palha-clara);
@@ -320,7 +340,7 @@ h1, h2, h3, h4, .fonte-titulo {
 }
 
 /* =====================================================================
-   MURAL DA COMUNIDADE (feature React)
+   MURAL DA COMUNIDADE
    ===================================================================== */
 .mural-comunidade { display: flex; flex-direction: column; gap: 1.1rem; }
 
@@ -469,8 +489,6 @@ h1, h2, h3, h4, .fonte-titulo {
 
 /* =====================================================================
    MICROINTERAÇÕES
-   Movimento com função: sinalizar o que é clicável e dar retorno de ação,
-   nunca decoração solta. Respeita prefers-reduced-motion no fim do arquivo.
    ===================================================================== */
 
 .cartao-fartura,
@@ -517,7 +535,7 @@ h1, h2, h3, h4, .fonte-titulo {
 }
 
 /* =====================================================================
-   PREVISÃO DO TEMPO (feature React — tela Início do simulador)
+   PREVISÃO DO TEMPO
    ===================================================================== */
 .card-previsao__resumo {
   display: flex;
@@ -582,7 +600,7 @@ h1, h2, h3, h4, .fonte-titulo {
 }
 
 /* =====================================================================
-   GRÁFICO DE PREÇOS (feature React — dentro do Mural, usa recharts)
+   GRÁFICO DE PREÇOS
    ===================================================================== */
 .mural-grafico {
   background: var(--palha-clara);
@@ -618,3 +636,151 @@ h1, h2, h3, h4, .fonte-titulo {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* =====================================================================
+   RODAPÉ COMPARTILHADO
+   ===================================================================== */
+.rodape-fartura {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(51, 36, 26, 0.12);
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+}
+
+.rodape-fartura__link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--texto-suave);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.rodape-fartura__link:hover { color: var(--mandioca-escura); }
+
+/* =====================================================================
+   CARTÕES DE NAVEGAÇÃO 
+   ===================================================================== */
+.grade-navegacao {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.9rem;
+}
+
+.cartao-navegacao {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--palha-clara);
+  border: 1px solid rgba(51, 36, 26, 0.08);
+  border-radius: 16px 16px 16px 4px;
+  padding: 1.1rem;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--sombra-cartao);
+  transition: box-shadow var(--transicao-padrao), transform var(--transicao-padrao);
+}
+.cartao-navegacao:hover { box-shadow: var(--sombra-cartao-hover); transform: translateY(-2px); }
+
+.cartao-navegacao__icone {
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--mandioca);
+}
+.cartao-navegacao__icone .icone-linha { width: 100%; height: 100%; }
+
+.cartao-navegacao__titulo { font-family: var(--fonte-titulo); font-weight: 700; font-size: 1.02rem; color: var(--texto-principal); margin: 0; }
+.cartao-navegacao__descricao { font-size: 0.8rem; color: var(--texto-suave); margin: 0; line-height: 1.4; }
+.cartao-navegacao__seta { margin-top: auto; color: var(--mandioca-escura); width: 1.1rem; height: 1.1rem; }
+.cartao-navegacao__seta .icone-linha { width: 100%; height: 100%; }
+
+/* =====================================================================
+   MODAL — Política de Privacidade / Termos de Uso
+   ===================================================================== */
+.modal-legal { position: fixed; inset: 0; z-index: 60; }
+.modal-legal.hidden { display: none; }
+
+.modal-legal__fundo {
+  position: absolute;
+  inset: 0;
+  background: rgba(38, 25, 15, 0.55);
+  animation: modalFundoEntra 160ms ease-out;
+}
+
+.modal-legal__caixa {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  width: calc(100% - 2rem);
+  max-height: min(80vh, 720px);
+  margin: 6vh auto 0;
+  background: var(--palha-clara);
+  border-radius: var(--raio-cartao);
+  box-shadow: var(--sombra-flutuante);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalCaixaEntra 200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.modal-legal__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.3rem;
+  border-bottom: 1px solid rgba(51, 36, 26, 0.1);
+  flex-shrink: 0;
+}
+
+.modal-legal__titulo { font-size: 1.1rem; margin: 0; }
+
+.modal-legal__fechar {
+  width: 2.1rem;
+  height: 2.1rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: none;
+  background: rgba(51, 36, 26, 0.08);
+  color: var(--texto-principal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transicao-padrao);
+}
+.modal-legal__fechar:hover { background: rgba(150, 56, 44, 0.15); color: var(--vermelho-alerta); }
+.modal-legal__fechar .icone-linha { width: 1.1rem; height: 1.1rem; }
+
+.modal-legal__corpo {
+  padding: 1.2rem 1.3rem 1.6rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--texto-principal);
+}
+
+.modal-legal__corpo h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--mandioca-escura);
+  margin: 1.3rem 0 0.4rem;
+}
+.modal-legal__corpo h3:first-of-type { margin-top: 0.6rem; }
+.modal-legal__corpo p { margin: 0 0 0.7rem; }
+.modal-legal__corpo ul { margin: 0 0 0.7rem; padding-left: 1.2rem; list-style: disc; }
+.modal-legal__corpo li { margin-bottom: 0.3rem; }
+.modal-legal__corpo code {
+  font-family: var(--fonte-dado);
+  background: rgba(51, 36, 26, 0.08);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+.modal-legal__meta { font-size: 0.72rem; color: var(--texto-suave); font-style: italic; }
+
+@keyframes modalFundoEntra { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modalCaixaEntra { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }

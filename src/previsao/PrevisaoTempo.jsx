@@ -8,11 +8,10 @@
 // Usa a biblioteca npm "date-fns" para formatação e aritmética de datas em pt-BR,
 // em vez de manipular strings de data manualmente.
 
+import React, { useState, useMemo } from 'react';
 import { addDays, format, isToday } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { gerarPrevisao } from './dadosSimulados.js';
-
-const { useState, useMemo } = React;
 
 const ROTULO_CONDICAO = {
   sol: 'Sol',

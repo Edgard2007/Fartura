@@ -6,7 +6,7 @@
 // Em produção, addOferta() seria trocado por uma chamada a uma API própria, com
 // o servidor aplicando as mesmas validações, RLS na tabela e rate limit por usuário.
 
-const { useState, useCallback } = React;
+import { useState, useCallback } from 'react';
 
 const OFERTAS_SEMENTE = [
   {

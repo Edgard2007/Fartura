@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Ícones de traço, desenhados como componentes React simples.
 // Ficam junto do Mural porque só são usados aqui; os ícones globais do restante
 // do site vivem em js/icones.js (usado pelo HTML e pelo script.js estáticos).

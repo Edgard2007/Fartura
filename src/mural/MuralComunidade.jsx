@@ -11,6 +11,8 @@
 //   CartaoOferta       -> apresenta uma oferta já validada
 //   MuralComunidade    -> orquestra estado, filtro e ordenação
 
+import React, { useState, useMemo } from 'react';
+
 import {
   LIMITES,
   sanitizarTexto,
@@ -25,8 +27,6 @@ import {
 import { useOfertas } from './useOfertas.js';
 import { IconeEtiqueta, IconeLocal, IconeBusca, IconeMais, IconeTelefone } from './icones.js';
 import GraficoPrecos from './GraficoPrecos.jsx';
-
-const { useState, useMemo } = React;
 
 const UNIDADES = ['caixas', 'sacas', 'toneladas', 'quilos', 'unidades'];
 

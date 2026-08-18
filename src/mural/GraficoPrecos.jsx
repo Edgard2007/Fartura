@@ -6,6 +6,8 @@
 // Fica dentro do próprio Mural porque depende diretamente do estado de ofertas
 // já carregado ali; não faz sentido como painel isolado sem esses dados.
 
+import React, { useMemo } from 'react';
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -16,8 +18,6 @@ import {
   Tooltip,
   Cell,
 } from 'recharts';
-
-const { useMemo } = React;
 
 const CORES_BARRA = ['#B5651D', '#43602C', '#285360', '#A87418', '#7E4310', '#4C8598'];
 
