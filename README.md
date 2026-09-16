@@ -1,5 +1,6 @@
-https://capsule-render.vercel.app/api?type=rect&height=300&color=33241a&text=Projeto%20Fartura&fontColor=efbb8b
-
+<p>
+  <img src= "https://capsule-render.vercel.app/api?type=rect&height=300&color=33241a&text=Projeto%20Fartura&fontColor=efbb8b">
+</p>
 
 # Projeto Fartura — React + JSX
 
