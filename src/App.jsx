@@ -10,7 +10,7 @@ import Contato from "./pages/Contato";
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<landing />} />
+      <Route path="/" element={<Home />} />
       <Route path="/home" element={<Home />} />
       <Route path="/dados" element={<Dados />} />
       <Route path="/personas" element={<Personas />} />
