@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 
-export default function landing() {
+export default function landing(){
   return (
     <div className="font-sans text-gray-800 bg-white">
       {/* HERO SECTION */}
@@ -82,7 +82,7 @@ export default function landing() {
                 <img src={crop.img} alt={crop.title} className="h-48 w-full object-cover" />
                 <div className="p-6">
                   <h3 className="text-xl font-serif mb-2">{crop.title}</h3>
-                  <p className="text-gray-500 text-xs mb-4">Grown using regenerative water and soil management practices.</p>
+                  <p className="text-gray-500 text-xs mb-4">Grown using er regenerative water and soil management practices.</p>
                   <div className="flex gap-2">
                     {crop.tags.map((tag, tIdx) => (
                       <span key={tIdx} className="bg-stone-100 text-stone-600 text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider">{tag}</span>
