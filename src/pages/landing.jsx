@@ -1,9 +1,9 @@
+import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 
 export default function Landing() {
   return (
-    <Layout>
     <div className="font-sans text-gray-800 bg-white">
       {/* HERO SECTION */}
       <section className="relative bg-cover bg-center text-white min-h-[600px] flex flex-col justify-between p-8 md:p-16" style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef')" }}>
@@ -14,7 +14,7 @@ export default function Landing() {
 
         <div className="max-w-2xl my-auto">
           <h1 className="text-4xl md:text-6xl font-serif font-light mb-4">
-            Cultivating the Future, <br/>
+            Cultivating the Future, <br />
             <span className="italic">Honoring Our Roots</span>
           </h1>
           <p className="text-gray-200 text-sm md:text-base mb-8 max-w-lg">
@@ -185,6 +185,5 @@ export default function Landing() {
         </div>
       </footer>
     </div>
-    </Layout>
   );
 };
