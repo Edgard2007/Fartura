@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import landing from "./pages/landing";
+import Landing from "./pages/landing";
 import Home from "./pages/Home";
 import Dados from "./pages/Dados";
 import Personas from "./pages/Personas";
@@ -10,7 +10,7 @@ import Contato from "./pages/Contato";
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/home" element={<Home />} />
       <Route path="/dados" element={<Dados />} />
       <Route path="/personas" element={<Personas />} />

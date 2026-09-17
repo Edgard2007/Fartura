@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
 
-export default function landing(){
+export default function landing() {
   return (
     <div className="font-sans text-gray-800 bg-white">
       {/* HERO SECTION */}
