@@ -182,7 +182,7 @@ export default function Landing() {
         <section id="impacto" className="landing-impact">
           <div className="impact-image">
             <img
-              src="https://images.unsplash.com/photo-1592417817098-8f3d6eb231fc?auto=format&fit=crop&w=1400&q=85"
+              src="/F.png"
               alt="Mãos colhendo alimentos em uma horta"
             />
             <span className="image-caption">
