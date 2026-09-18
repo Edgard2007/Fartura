@@ -51,7 +51,7 @@ export default function Landing() {
             playsInline
             poster="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85"
           >
-            <source src={videoSrc} type="video/mp4" />
+            <source src="./assets/plantas.mp4" type="video/mp4" />
           </video>
           <div className="landing-hero__veil" />
           <div className="landing-hero__content">
