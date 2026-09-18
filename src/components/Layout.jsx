@@ -30,10 +30,10 @@ function LegalModal({ tipo, fechar }) {
   </div>;
 }
 
-export default function Layout({ title, subtitle, children, wide = false, landing = false }) {
+export default function Layout({ title, subtitle, children, wide = false }) {
   const [legal, setLegal] = useState(null);
   return <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 ${wide ? 'max-w-7xl' : 'max-w-4xl'}`}>
-    {!landing && <header className="cabecalho-fartura mb-10">
+    <header className="cabecalho-fartura mb-10">
       <svg className="cabecalho-fartura__curvas" viewBox="0 0 800 200" preserveAspectRatio="none" aria-hidden="true">
         <path d="M-20 40 C150 10,300 90,480 50 S780 10,900 60" stroke="#F2E8D5" strokeWidth="1.5" fill="none"/>
         <path d="M-20 80 C150 50,300 130,480 90 S780 50,900 100" stroke="#F2E8D5" strokeWidth="1.5" fill="none"/>
@@ -46,7 +46,7 @@ export default function Layout({ title, subtitle, children, wide = false, landin
       <nav className="cabecalho-fartura__nav" aria-label="Navegação principal">
         {links.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => `aba-fartura${isActive ? ' aba-fartura--ativa' : ''}`}>{label}</NavLink>)}
       </nav>
-    </header>}
+    </header>
     {children}
     <footer className="rodape-fartura">
       <p>Projeto Fartura — relatório e protótipo interativo. Nenhum dado enviado pelos formulários deixa o seu navegador.</p>
