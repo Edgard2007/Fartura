@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const videoSrc = "/plantas.mp4";
+const videoSrc = "./assets/plantas.mp4";
 
 const navItems = [
   ["#manifesto", "Manifesto"],
