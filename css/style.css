@@ -485,6 +485,8 @@ h1, h2, h3, h4, .fonte-titulo {
 
 @media (max-width: 480px) {
   .mural-campo--largo { grid-column: span 1; }
+  .dados-painel__intro { display: block; }
+  .dados-painel__intro p { margin-top: .45rem; text-align: left; }
 }
 
 /* =====================================================================

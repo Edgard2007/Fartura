@@ -509,9 +509,9 @@ export default function Simulador() {
         </div>
       </main>
       {voiceOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div className="modal-overlay fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="voice-modal-title">
           <div
-            className="rounded-3xl w-full max-w-sm p-6 text-center"
+            className="modal-legal w-full max-w-sm p-6 text-center"
             style={{ background: "var(--palha-clara)" }}
           >
             <Icon
@@ -519,7 +519,7 @@ export default function Simulador() {
               className="block mb-2 mx-auto w-10 h-10"
               style={{ color: "var(--mandioca)" }}
             />
-            <h3 className="text-xl font-bold mb-2">Simulando Comando de Voz</h3>
+            <h3 id="voice-modal-title" className="text-xl font-bold mb-2">Simulando Comando de Voz</h3>
             <p className="text-sm text-[color:var(--texto-suave)] mb-6">
               Como o produtor nem sempre sabe escrever, ele pode tocar no
               microfone e dizer comandos simples.

@@ -15,7 +15,7 @@ const OFERTAS_SEMENTE = [
     quantidade: 30,
     unidade: 'caixas',
     preco: 45,
-    local: 'Zona Rural — Bairro Esperança',
+    local: 'Zona Rural, Bairro Esperança',
     contatoMascarado: '(31) ****-**12',
     publicadoEm: Date.now() - 1000 * 60 * 60 * 2,
   },

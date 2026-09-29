@@ -9,11 +9,11 @@ const links = [
 function LegalModal({ tipo, fechar }) {
   if (!tipo) return null;
   const privacidade = tipo === 'privacidade';
-  return <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" role="dialog" aria-modal="true">
+  return <div className="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title">
     <div className="modal-legal" style={{ background: 'var(--palha-clara)' }}>
       <div className="flex items-center justify-between gap-4 mb-4">
-        <h2 className="text-xl font-bold">{privacidade ? 'Política de Privacidade' : 'Termos de Uso'}</h2>
-        <button className="botao botao--fantasma" onClick={fechar} type="button">Fechar</button>
+        <h2 id="legal-modal-title" className="text-xl font-bold">{privacidade ? 'Política de Privacidade' : 'Termos de Uso'}</h2>
+        <button className="modal-legal__close" onClick={fechar} type="button" aria-label="Fechar janela">Fechar</button>
       </div>
       <p className="modal-legal__meta">Última atualização: 05 de agosto de 2026.</p>
       {privacidade ? <>
@@ -30,28 +30,51 @@ function LegalModal({ tipo, fechar }) {
   </div>;
 }
 
-export default function Layout({ title, subtitle, children, wide = false }) {
+export function SiteFooter() {
   const [legal, setLegal] = useState(null);
-  return <div className={`mx-auto px-4 sm:px-6 lg:px-8 py-8 ${wide ? 'max-w-7xl' : 'max-w-4xl'}`}>
-    <header className="cabecalho-fartura mb-10">
-      <svg className="cabecalho-fartura__curvas" viewBox="0 0 800 200" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M-20 40 C150 10,300 90,480 50 S780 10,900 60" stroke="#F2E8D5" strokeWidth="1.5" fill="none"/>
-        <path d="M-20 80 C150 50,300 130,480 90 S780 50,900 100" stroke="#F2E8D5" strokeWidth="1.5" fill="none"/>
-        <path d="M-20 120 C150 90,300 170,480 130 S780 90,900 140" stroke="#F2E8D5" strokeWidth="1.5" fill="none"/>
-        <path d="M-20 160 C150 130,300 210,480 170 S780 130,900 180" stroke="#F2E8D5" strokeWidth="1.5" fill="none"/>
-      </svg>
-      <span className="cabecalho-fartura__marca">ODS 2 · Segurança Alimentar</span>
-      <h1 className="cabecalho-fartura__titulo">{title}</h1>
-      {subtitle && <p className="cabecalho-fartura__subtitulo">{subtitle}</p>}
-      <nav className="cabecalho-fartura__nav" aria-label="Navegação principal">
-        {links.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => `aba-fartura${isActive ? ' aba-fartura--ativa' : ''}`}>{label}</NavLink>)}
-      </nav>
-    </header>
-    {children}
-    <footer className="rodape-fartura">
-      <p>Projeto Fartura — relatório e protótipo interativo. Nenhum dado enviado pelos formulários deixa o seu navegador.</p>
-      <p className="mt-1"><button type="button" className="rodape-fartura__link" onClick={() => setLegal('privacidade')}>Política de Privacidade</button><span className="mx-2">·</span><button type="button" className="rodape-fartura__link" onClick={() => setLegal('termos')}>Termos de Uso</button></p>
+
+  return <>
+    <footer className="site-footer">
+      <div className="site-footer__main">
+        <div>
+          <div className="site-header__brand site-header__brand--footer"><span className="brand-mark">F</span><span>Fartura<span className="brand-dot">.</span></span></div>
+          <p>Tecnologia contra a fome.<br />Agricultura familiar em rede.</p>
+        </div>
+        <div><span className="site-footer__label">Navegação</span>{links.slice(0, 4).map(([to, label]) => <NavLink key={to} to={to}>{label}</NavLink>)}</div>
+        <div><span className="site-footer__label">Transparência</span><button type="button" onClick={() => setLegal('privacidade')}>Política de Privacidade</button><button type="button" onClick={() => setLegal('termos')}>Termos de Uso</button></div>
+      </div>
+      <div className="site-footer__bottom"><span>© 2026 Projeto Fartura</span><span>Feito com cuidado no Brasil</span></div>
     </footer>
     <LegalModal tipo={legal} fechar={() => setLegal(null)} />
+  </>;
+}
+
+export default function Layout({ title, subtitle, children, wide = false }) {
+  return <div className="app-shell">
+    <header className="site-header">
+      <NavLink to="/" className="site-header__brand" aria-label="Fartura, início">
+        <span className="brand-mark">F</span>
+        <span>Fartura<span className="brand-dot">.</span></span>
+      </NavLink>
+      <nav className="site-header__nav" aria-label="Navegação principal">
+        {links.map(([to, label]) => <NavLink key={to} to={to} end={to === '/'} className={({ isActive }) => `site-header__link${isActive ? ' site-header__link--active' : ''}`}>{label}</NavLink>)}
+      </nav>
+      <NavLink to="/contato" className="site-header__cta">Fale com a gente</NavLink>
+    </header>
+    <section className="internal-hero">
+      <video className="internal-hero__media" autoPlay muted loop playsInline poster="/F.png">
+        <source src="/plantas.mp4" type="video/mp4" />
+      </video>
+      <div className="internal-hero__veil" />
+      <div className="internal-hero__content">
+        <p className="eyebrow eyebrow--light"><span className="eyebrow-line" /> ODS 2 · Segurança alimentar</p>
+        <h1>{title}</h1>
+        {subtitle && <p>{subtitle}</p>}
+      </div>
+    </section>
+    <main className={`internal-content mx-auto px-4 sm:px-6 lg:px-8 ${wide ? 'max-w-7xl' : 'max-w-5xl'}`}>
+      {children}
+    </main>
+    <SiteFooter />
   </div>;
 }
