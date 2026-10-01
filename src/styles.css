@@ -909,6 +909,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .landing-hero__video {
-    display: none;
+    display: block;
   }
 }

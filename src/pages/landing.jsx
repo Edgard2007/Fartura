@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { SiteFooter } from "../components/Layout";
 
-const videoSrc = "/11934576_1920_1080_60fps.mp4";
-const videoSrc1 = "/8522207-hd_1920_1080_30fps.mp4";
-const videoSrc2 = "/9708017-hd_1920_1080_30fps.mp4"
+const videoSrc = "https://fqfzbgkypsghwlawscny.supabase.co/storage/v1/object/public/videos/11934576_1920_1080_60fps.mp4";
+const videoSrc1 = "https://fqfzbgkypsghwlawscny.supabase.co/storage/v1/object/public/videos/8522207-hd_1920_1080_30fps.mp4";
+const videoSrc2 = "https://fqfzbgkypsghwlawscny.supabase.co/storage/v1/object/public/videos/9708017-hd_1920_1080_30fps.mp4";
 
 const navItems = [
   ["#manifesto", "Manifesto"],
