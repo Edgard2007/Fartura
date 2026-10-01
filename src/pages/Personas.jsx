@@ -3,7 +3,7 @@ export default function Personas() {
   return (
     <Layout
       title="Personas"
-      subtitle="Quem usaria o Fartura no dia a dia — as pessoas por trás dos dados."
+      subtitle="Quem usaria o Fartura no dia a dia, as pessoas por trás dos dados."
     >
       <main className="cartao-fartura space-y-4">
         <div

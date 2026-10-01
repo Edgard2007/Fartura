@@ -18,7 +18,11 @@ export default function Dados() {
       title="Dados do Campo"
       subtitle="Censo Agropecuário IBGE (2017): a força da agricultura familiar no Brasil."
     >
-      <main className="cartao-fartura">
+      <main className="cartao-fartura dados-painel">
+        <div className="dados-painel__intro">
+          <span className="dados-painel__eyebrow">Leitura principal</span>
+          <p>Os estabelecimentos familiares são maioria no território brasileiro.</p>
+        </div>
         <h2 className="text-lg font-bold text-center mb-2">
           A Força da Agricultura Familiar no Brasil
         </h2>
@@ -35,8 +39,8 @@ export default function Dados() {
                 outerRadius="90%"
                 stroke="none"
               >
-                <Cell fill="#43602C" />
-                <Cell fill="#e2e0d5" />
+                <Cell fill="var(--broto)" />
+                <Cell fill="#D9CBB8" />
               </Pie>
               <Tooltip />
               <Legend wrapperStyle={{ fontSize: 11, fontWeight: 600 }} />

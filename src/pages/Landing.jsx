@@ -1,6 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { SiteFooter } from "../components/Layout";
 
-const videoSrc = "/plantas.mp4";
+const videoSrc = "https://fqfzbgkypsghwlawscny.supabase.co/storage/v1/object/public/videos/11934576_1920_1080_60fps.mp4";
+const videoSrc1 = "https://fqfzbgkypsghwlawscny.supabase.co/storage/v1/object/public/videos/8522207-hd_1920_1080_30fps.mp4";
+const videoSrc2 = "https://fqfzbgkypsghwlawscny.supabase.co/storage/v1/object/public/videos/9708017-hd_1920_1080_30fps.mp4";
 
 const navItems = [
   ["#manifesto", "Manifesto"],
@@ -14,10 +18,30 @@ function Arrow() {
 }
 
 export default function Landing() {
+  const [currentVideo, setCurrentVideo] = useState(videoSrc);
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play();
+    }
+  }, [currentVideo]);
+
+  function handleVideoEnded() {
+    if (currentVideo === videoSrc) {
+      setCurrentVideo(videoSrc1);
+    } else if (currentVideo === videoSrc1){
+      setCurrentVideo(videoSrc2);
+    } else if (currentVideo === videoSrc2) {
+      setCurrentVideo(videoSrc);
+    }
+  }
+
   return (
     <div className="landing-page">
       <header className="landing-nav">
-        <Link to="/" className="landing-brand" aria-label="Fartura — início">
+        <Link to="/" className="landing-brand" aria-label="Fartura, início">
           <span className="brand-mark">F</span>
           <span>
             Fartura<span className="brand-dot">.</span>
@@ -44,14 +68,14 @@ export default function Landing() {
       <main>
         <section className="landing-hero" aria-labelledby="hero-title">
           <video
+            ref={videoRef}
             className="landing-hero__video"
             autoPlay
             muted
-            loop
             playsInline
-            poster="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85"
+            onEnded={handleVideoEnded}
           >
-            <source src={videoSrc} type="video/mp4" />
+            <source src={currentVideo} type="video/mp4" />
           </video>
           <div className="landing-hero__veil" />
           <div className="landing-hero__content">
@@ -85,16 +109,13 @@ export default function Landing() {
             </span>
             <span>cultivar · conectar · repartir</span>
           </div>
-          <div className="landing-hero__scroll">
-            role para descobrir <span>↓</span>
-          </div>
         </section>
 
         <section
           id="manifesto"
           className="landing-section landing-section--manifesto"
         >
-          <div className="section-kicker">01 — O manifesto</div>
+          <div className="section-kicker">O manifesto</div>
           <div className="manifesto-grid">
             <h2>
               Comida de verdade começa <em>na origem.</em>
@@ -126,7 +147,7 @@ export default function Landing() {
 
         <section id="solucao" className="landing-section landing-section--dark">
           <div className="section-kicker section-kicker--light">
-            02 — O que fazemos
+            O que fazemos
           </div>
           <div className="solution-head">
             <h2>
@@ -192,7 +213,7 @@ export default function Landing() {
             </span>
           </div>
           <div className="impact-copy">
-            <div className="section-kicker">03 — O impacto</div>
+            <div className="section-kicker">O impacto</div>
             <h2>
               Quando a ponta
               <br />
@@ -242,30 +263,7 @@ export default function Landing() {
         </section>
       </main>
 
-      <footer className="landing-footer">
-        <div className="landing-brand landing-brand--footer">
-          <span className="brand-mark">F</span>
-          <span>
-            Fartura<span className="brand-dot">.</span>
-          </span>
-        </div>
-        <p>
-          Tecnologia contra a fome.
-          <br />
-          Agricultura familiar em rede.
-        </p>
-        <div className="footer-links">
-          <Link to="/home">O projeto</Link>
-          <Link to="/contato">Contato</Link>
-          <a href="#manifesto">Manifesto</a>
-        </div>
-        <div className="footer-bottom">
-          <span>© 2026 Projeto Fartura</span>
-          <span>
-            Feito com cuidado no Brasil <span className="footer-heart">✦</span>
-          </span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

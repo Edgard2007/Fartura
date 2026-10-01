@@ -8,8 +8,8 @@ export default function Mural() {
     >
       <main className="cartao-fartura">
         <p className="text-sm text-[color:var(--texto-suave)] mb-4">
-          Nenhum dado é armazenado além desta sessão do navegador — protótipo
-          sem backend. Telefones de contato são exibidos já mascarados.
+          Nenhum dado é armazenado além desta sessão do navegador. Este é um
+          protótipo sem backend. Telefones de contato são exibidos já mascarados.
         </p>
         <MuralComunidade />
       </main>

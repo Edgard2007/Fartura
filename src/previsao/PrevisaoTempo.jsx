@@ -73,7 +73,7 @@ export default function PrevisaoTempo() {
           'p',
           { className: 'card-previsao__legenda' },
           isToday(dataSelecionada) ? 'Hoje' : format(dataSelecionada, "EEEE, d 'de' MMMM", { locale: ptBR }),
-          ' — ',
+          ', ',
           diaSelecionado.favoravelColheita ? 'favorável para colheita' : 'evite colheita, solo úmido'
         )
       )
