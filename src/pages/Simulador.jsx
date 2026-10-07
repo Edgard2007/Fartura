@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
 import Layout from "../components/Layout";
 import Icon from "../components/Icon";
@@ -362,7 +362,110 @@ function Financas() {
     </div>
   );
 }
+const TECNICO_PERGUNTAS = [
+  {
+    pergunta: "Como controlo as lagartas do milho?",
+    resposta:
+      "Inspecione as folhas no início da manhã e retire as lagartas visíveis. Se o ataque continuar, registre a ocorrência para avaliarmos o manejo adequado.",
+  },
+  {
+    pergunta: "Quando devo irrigar a lavoura?",
+    resposta:
+      "A melhor janela é pela manhã ou no fim da tarde. Verifique a umidade do solo antes de irrigar para evitar desperdício de água.",
+  },
+  {
+    pergunta: "Minha alface já pode ser vendida?",
+    resposta:
+      "Se as folhas estiverem firmes, sem manchas e com tamanho uniforme, ela já pode ser separada para comercialização. Posso ajudar a preparar a oferta.",
+  },
+];
+
+const TECNICO_PERGUNTAS_ADICIONAIS = [
+  {
+    pergunta: "Como preparo a oferta da colheita?",
+    resposta:
+      "Separe a produção por qualidade, informe a quantidade disponível e registre um local seguro para a retirada. Assim os compradores recebem uma oferta mais clara.",
+  },
+  {
+    pergunta: "Como identifico uma planta doente?",
+    resposta:
+      "Observe manchas, folhas deformadas e mudanças de cor. Tire uma foto da área afetada e envie para a avaliação antes de aplicar qualquer produto.",
+  },
+  {
+    pergunta: "Posso plantar depois da chuva?",
+    resposta:
+      "Espere o solo drenar e verifique se ele está úmido, mas não encharcado. Isso reduz o risco de compactação e ajuda as sementes a se desenvolverem.",
+  },
+];
+
 function Tecnico({ voice }) {
+  const respostaTimeoutRef = useRef(null);
+  const [mensagens, setMensagens] = useState([
+    {
+      id: "inicial-ana",
+      autor: "tecnico",
+      texto:
+        "Bom dia, João! Como está o combate às lagartas no plantio de milho híbrido?",
+      horario: "09:30",
+    },
+    {
+      id: "inicial-joao",
+      autor: "produtor",
+      texto:
+        "Bom dia dona Ana, o remédio que você receitou funcionou muito bem. Obrigado!",
+      horario: "09:35",
+    },
+  ]);
+  const [respondendo, setRespondendo] = useState(false);
+  const [mostraPerguntasAdicionais, setMostraPerguntasAdicionais] =
+    useState(false);
+
+  useEffect(
+    () => () => {
+      if (respostaTimeoutRef.current) {
+        clearTimeout(respostaTimeoutRef.current);
+      }
+    },
+    [],
+  );
+
+  function enviarPergunta(pergunta, resposta) {
+    if (respondendo) return;
+
+    const horario = new Date().toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    setMensagens((mensagensAtuais) => [
+      ...mensagensAtuais,
+      {
+        id: `pergunta-${Date.now()}`,
+        autor: "produtor",
+        texto: pergunta,
+        horario,
+      },
+    ]);
+    setRespondendo(true);
+    setMostraPerguntasAdicionais(true);
+
+    respostaTimeoutRef.current = setTimeout(() => {
+      setMensagens((mensagensAtuais) => [
+        ...mensagensAtuais,
+        {
+          id: `resposta-${Date.now()}`,
+          autor: "tecnico",
+          texto: resposta,
+          horario: new Date().toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+        },
+      ]);
+      setRespondendo(false);
+    }, 900);
+  }
+
   return (
     <div className="fade-in h-full flex flex-col">
       <div className="bg-white p-3 shadow-sm sticky top-0 z-10 flex items-center gap-3">
@@ -394,30 +497,80 @@ function Tecnico({ voice }) {
         className="flex-1 p-4 overflow-y-auto space-y-4 flex flex-col justify-end"
         style={{ minHeight: 380 }}
       >
-        <div className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] border border-gray-100 self-start">
-          <p className="text-xs text-gray-800">
-            Bom dia, João! Como está o combate às lagartas no plantio de milho
-            híbrido?
-          </p>
-          <span className="text-[9px] text-gray-400 mt-1 block">09:30</span>
-        </div>
-        <div
-          className="p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] border self-end"
-          style={{
-            background: "rgba(79,109,52,0.12)",
-            borderColor: "rgba(79,109,52,0.3)",
-          }}
-        >
-          <p className="text-xs" style={{ color: "var(--terra)" }}>
-            Bom dia dona Ana, o remédio que você receitou funcionou muito bem.
-            Obrigado!
-          </p>
-          <span
-            className="text-[9px] mt-1 flex justify-end items-center gap-1"
-            style={{ color: "var(--broto)" }}
+        {mensagens.map((mensagem) =>
+          mensagem.autor === "tecnico" ? (
+            <div
+              key={mensagem.id}
+              className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] border border-gray-100 self-start"
+            >
+              <p className="text-xs text-gray-800">{mensagem.texto}</p>
+              <span className="text-[9px] text-gray-400 mt-1 block">
+                {mensagem.horario}
+              </span>
+            </div>
+          ) : (
+            <div
+              key={mensagem.id}
+              className="p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[85%] border self-end"
+              style={{
+                background: "rgba(79,109,52,0.12)",
+                borderColor: "rgba(79,109,52,0.3)",
+              }}
+            >
+              <p className="text-xs" style={{ color: "var(--terra)" }}>
+                {mensagem.texto}
+              </p>
+              <span
+                className="text-[9px] mt-1 flex justify-end items-center gap-1"
+                style={{ color: "var(--broto)" }}
+              >
+                {mensagem.horario}
+                <Icon name="checagemDupla" className="w-4 h-4" />
+              </span>
+            </div>
+          ),
+        )}
+        {respondendo && (
+          <div
+            className="bg-white p-3 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 self-start"
+            aria-label="Agrônoma está respondendo"
           >
-            09:35 <Icon name="checagemDupla" className="w-4 h-4" />
-          </span>
+            <div className="flex items-center gap-1">
+              {[0, 1, 2].map((indice) => (
+                <span
+                  key={indice}
+                  className="h-1.5 w-1.5 rounded-full animate-bounce"
+                  style={{
+                    background: "var(--broto)",
+                    animationDelay: `${indice * 120}ms`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="px-3 pb-3 space-y-2">
+        <p className="text-[10px] font-bold uppercase tracking-wide text-gray-500">
+          Perguntas rápidas
+        </p>
+        <div
+          className="flex gap-2 overflow-x-auto pb-1"
+          aria-label="Perguntas rápidas"
+        >
+          {[...(mostraPerguntasAdicionais ? TECNICO_PERGUNTAS_ADICIONAIS : []), ...TECNICO_PERGUNTAS].map(
+            ({ pergunta, resposta }) => (
+            <button
+              key={pergunta}
+              type="button"
+              disabled={respondendo}
+              className="shrink-0 rounded-full border border-gray-300 bg-white px-3 py-2 text-left text-[10px] font-semibold text-gray-700 disabled:cursor-wait disabled:opacity-50"
+              onClick={() => enviarPergunta(pergunta, resposta)}
+            >
+              {pergunta}
+            </button>
+            ),
+          )}
         </div>
       </div>
       <div className="bg-gray-100 p-3 border-t border-gray-200 flex items-center gap-2 mt-auto">
