@@ -75,6 +75,20 @@ Previsão do Tempo são funcionalidades React reais, não apenas mockups estáti
 - **Design system próprio** — paleta, tipografia e componentes autorais em
   `css/style.css`, sem depender de um template de terceiros.
 
+### APIs públicas integradas
+
+- **Previsão do tempo:** Open-Meteo, sem chave de API. A busca de cidade usa o
+  serviço de geocodificação da Open-Meteo e a previsão é obtida pelas coordenadas
+  selecionadas.
+- **Dados do campo:** IBGE SIDRA, tabela 1612 da Produção Agrícola Municipal.
+  A página apresenta a publicação mais recente disponível da série oficial.
+- **Busca de localização:** Open-Meteo Geocoding, limitada a resultados
+  brasileiros no simulador.
+
+Os dados do Censo Agropecuário de 2017 continuam identificados como históricos.
+Eles não são substituídos por séries atuais que tenham conceitos ou unidades
+diferentes.
+
 ## Tecnologias utilizadas
 
 **Base**

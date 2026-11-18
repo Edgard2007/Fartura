@@ -8,10 +8,11 @@
 // Usa a biblioteca npm "date-fns" para formatação e aritmética de datas em pt-BR,
 // em vez de manipular strings de data manualmente.
 
-import React, { useState, useMemo } from 'react';
-import { addDays, format, isToday } from 'date-fns';
+import React, { useEffect, useState, useMemo } from 'react';
+import { addDays, format, isToday, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { gerarPrevisao } from './dadosSimulados.js';
+import { buscarPrevisaoSeteDias } from '../services/weatherApi.js';
 
 const ROTULO_CONDICAO = {
   sol: 'Sol',
@@ -52,15 +53,49 @@ function IconeCondicao({ condicao }) {
   );
 }
 
-export default function PrevisaoTempo() {
-  const previsao = useMemo(() => gerarPrevisao(new Date(), 7), []);
+export default function PrevisaoTempo({ location = null }) {
+  const previsaoSimulada = useMemo(() => gerarPrevisao(new Date(), 7), []);
+  const [previsao, setPrevisao] = useState(previsaoSimulada);
+  const [estadoConsulta, setEstadoConsulta] = useState('carregando');
   const [diaSelecionadoIndice, setDiaSelecionadoIndice] = useState(0);
   const diaSelecionado = previsao[diaSelecionadoIndice];
-  const dataSelecionada = addDays(new Date(), diaSelecionado.offsetDias);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const parametrosLocation =
+      location?.latitude && location?.longitude
+        ? { latitude: location.latitude, longitude: location.longitude }
+        : null;
+
+    buscarPrevisaoSeteDias(controller.signal, parametrosLocation)
+      .then((dias) => {
+        setPrevisao(dias);
+        setEstadoConsulta('atualizada');
+      })
+      .catch((erro) => {
+        if (erro.name !== 'AbortError') {
+          setEstadoConsulta('fallback');
+        }
+      });
+
+    return () => controller.abort();
+  }, [location?.latitude, location?.longitude]);
+
+  const obterDataDoDia = (dia) =>
+    dia.data ? parseISO(dia.data) : addDays(new Date(), dia.offsetDias);
+
+  const dataSelecionada = obterDataDoDia(diaSelecionado);
 
   return React.createElement(
     'div',
     { className: 'card-previsao' },
+    estadoConsulta === 'carregando' &&
+      React.createElement('p', { className: 'card-previsao__origem', role: 'status' }, `Atualizando previsão de ${location?.name ?? 'Uberlândia'}...`),
+    estadoConsulta === 'fallback' &&
+      React.createElement('p', { className: 'card-previsao__origem' }, 'Previsão ilustrativa: serviço temporariamente indisponível'),
+    estadoConsulta === 'atualizada' &&
+      React.createElement('p', { className: 'card-previsao__origem' }, `Previsão real · ${location?.name ?? 'Uberlândia'}`),
     React.createElement(
       'div',
       { className: 'card-previsao__resumo' },
@@ -82,7 +117,7 @@ export default function PrevisaoTempo() {
       'div',
       { className: 'card-previsao__dias', role: 'list' },
       previsao.map((dia, indice) => {
-        const data = addDays(new Date(), dia.offsetDias);
+        const data = dia.data ? parseISO(dia.data) : addDays(new Date(), dia.offsetDias);
         const selecionado = indice === diaSelecionadoIndice;
         return React.createElement(
           'button',

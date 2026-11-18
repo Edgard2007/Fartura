@@ -43,6 +43,14 @@
 .mobile-content {
   overflow-y: auto;
 }
+.card-previsao__origem {
+  margin: 0;
+  padding: 0.45rem 0.75rem 0;
+  color: var(--texto-suave);
+  font: 600 0.65rem var(--fonte-dado);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
 .bottom-nav button {
   border: 0;
   font: inherit;
