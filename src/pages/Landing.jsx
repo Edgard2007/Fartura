@@ -99,6 +99,14 @@ export default function Landing() {
               </Link>
               <a href="#manifesto" className="hero-text-link">
                 Entenda o movimento <span>↓</span>
+              </a>              
+              <a
+                href="https://youtu.be/DxRHBkwUqS8"
+                target="_blank"
+                rel="noreferrer"
+                className="hero-text-link"
+              >
+                Assista ao nosso pitch <span>▶</span>
               </a>
             </div>
           </div>
