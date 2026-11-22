@@ -243,7 +243,7 @@ export default function Landing() {
                 </span>
               </div>
               <div>
-                <strong>70%</strong>
+                <strong>77%</strong>
                 <span>
                   dos alimentos vêm
                   <br />
