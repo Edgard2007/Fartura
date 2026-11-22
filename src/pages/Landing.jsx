@@ -101,7 +101,7 @@ export default function Landing() {
                 Entenda o movimento <span>↓</span>
               </a>              
               <a
-                href="https://youtu.be/DxRHBkwUqS8"
+                href="https://www.youtube.com/watch?v=Jp6AwTWUBn4"
                 target="_blank"
                 rel="noreferrer"
                 className="hero-text-link"
